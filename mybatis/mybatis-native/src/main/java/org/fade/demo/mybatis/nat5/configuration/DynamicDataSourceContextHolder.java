@@ -10,13 +10,13 @@ public class DynamicDataSourceContextHolder {
 
     private static final ThreadLocal<String> CONTEXT = new ThreadLocal<>();
 
-    public static void addContextKey(DataSourceKey key) {
-        CONTEXT.set(key.name());
+    public static void addContextKey(String key) {
+        CONTEXT.set(key);
     }
 
     public static String getContextKey() {
         String key = CONTEXT.get();
-        return ObjectUtils.isEmpty(key) ? DataSourceKey.REPLICA.name() : key;
+        return ObjectUtils.isEmpty(key) ? DataSourceKey.REPLICA : key;
     }
 
     public static void removeContextKey() {
