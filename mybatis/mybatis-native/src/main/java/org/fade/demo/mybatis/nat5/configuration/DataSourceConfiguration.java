@@ -2,6 +2,7 @@ package org.fade.demo.mybatis.nat5.configuration;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
+import org.springframework.aop.Pointcut;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -75,6 +76,11 @@ public class DataSourceConfiguration implements BeanFactoryAware {
         var sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSource);
         return sqlSessionFactoryBean.getObject();
+    }
+
+    @Bean
+    public Pointcut dynamicDataSourcePointcut() {
+        return new DynamicDataSourcePointcut();
     }
 
 }
