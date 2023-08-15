@@ -1,8 +1,11 @@
 package org.fade.demo.mybatis.nat5.configuration;
 
+import org.aopalliance.intercept.MethodInterceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.springframework.aop.Pointcut;
+import org.springframework.aop.PointcutAdvisor;
+import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -81,6 +84,20 @@ public class DataSourceConfiguration implements BeanFactoryAware {
     @Bean
     public Pointcut dynamicDataSourcePointcut() {
         return new DynamicDataSourcePointcut();
+    }
+
+    @Bean
+    public MethodInterceptor dynamicDataSourceMethodInterceptor() {
+        return new DynamicDataSourceMethodInterceptor();
+    }
+
+    @Bean
+    public PointcutAdvisor pointcutAdvisor(@Qualifier("dynamicDataSourcePointcut") Pointcut pointcut,
+                                           @Qualifier("dynamicDataSourceMethodInterceptor") MethodInterceptor methodInterceptor) {
+        DefaultPointcutAdvisor defaultPointcutAdvisor = new DefaultPointcutAdvisor();
+        defaultPointcutAdvisor.setPointcut(pointcut);
+        defaultPointcutAdvisor.setAdvice(methodInterceptor);
+        return defaultPointcutAdvisor;
     }
 
 }
