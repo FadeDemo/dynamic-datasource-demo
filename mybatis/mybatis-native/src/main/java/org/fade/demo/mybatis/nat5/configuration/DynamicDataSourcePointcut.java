@@ -14,7 +14,7 @@ public class DynamicDataSourcePointcut extends StaticMethodMatcherPointcut {
 
     @Override
     public boolean matches(Method method, Class<?> targetClass) {
-        return ObjectUtils.isEmpty(method.getAnnotation(Ds.class));
+        return !ObjectUtils.isEmpty(method.getAnnotation(Ds.class));
     }
 
 }

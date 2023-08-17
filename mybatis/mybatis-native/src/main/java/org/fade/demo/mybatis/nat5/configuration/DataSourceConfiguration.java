@@ -3,6 +3,7 @@ package org.fade.demo.mybatis.nat5.configuration;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.boot.autoconfigure.MybatisProperties;
 import org.springframework.aop.Pointcut;
 import org.springframework.aop.PointcutAdvisor;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
@@ -15,6 +16,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 
@@ -39,6 +41,7 @@ public class DataSourceConfiguration implements BeanFactoryAware {
     }
 
     @Bean(DataSourceKey.REPLICA)
+    @Primary
     @ConfigurationProperties("spring.datasource.replica")
     public DataSource replica() {
         return DataSourceBuilder.create().build();
@@ -75,9 +78,10 @@ public class DataSourceConfiguration implements BeanFactoryAware {
      * @see org.mybatis.spring.SqlSessionFactoryBean
      * */
     @Bean
-    public SqlSessionFactory sqlSessionFactory(@Qualifier("dynamic") DataSource dataSource) throws Exception {
+    public SqlSessionFactory sqlSessionFactory(MybatisProperties mybatisProperties, @Qualifier("dynamic") DataSource dataSource) throws Exception {
         var sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSource);
+        sqlSessionFactoryBean.setMapperLocations(mybatisProperties.resolveMapperLocations());
         return sqlSessionFactoryBean.getObject();
     }
 
