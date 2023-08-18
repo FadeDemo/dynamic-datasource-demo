@@ -36,6 +36,12 @@ public class RunoobController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/updateWithException")
+    public ResponseEntity<Void> updateRunoobWithException(@RequestBody Runoob runoob) {
+        this.runoobService.updateWithException(runoob);
+        return ResponseEntity.ok().build();
+    }
+
     @PostMapping("/delete")
     public ResponseEntity<Void> deleteRunoob(@RequestBody Runoob runoob) {
         Objects.requireNonNull(runoob);

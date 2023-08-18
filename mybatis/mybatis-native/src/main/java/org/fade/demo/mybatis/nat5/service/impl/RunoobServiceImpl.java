@@ -39,20 +39,32 @@ public class RunoobServiceImpl implements RunoobService {
     @Override
     @Ds(DataSourceKey.SOURCE)
     @Transactional(rollbackFor = Throwable.class)
-    public void update(Runoob runoob) {
+    public void updateWithException(Runoob runoob) {
+        updateCommon(runoob);
+        throw new RuntimeException("测试事务是否正常");
+    }
+
+    private void updateCommon(Runoob runoob) {
         Objects.requireNonNull(runoob);
         Integer runoobId = runoob.getRunoobId();
         Objects.requireNonNull(runoobId);
         Runoob data = runoobMapper.findById(runoobId);
-        String runoobTitle = data.getRunoobTitle();
-        String runoobAuthor = data.getRunoobAuthor();
+        String runoobTitle = runoob.getRunoobTitle();
+        String runoobAuthor = runoob.getRunoobAuthor();
         if (StringUtils.hasLength(runoobTitle)) {
             data.setRunoobTitle(runoobTitle);
         }
         if (StringUtils.hasLength(runoobAuthor)) {
             data.setRunoobAuthor(runoobAuthor);
         }
-        runoobMapper.update(runoob);
+        runoobMapper.update(data);
+    }
+
+    @Override
+    @Ds(DataSourceKey.SOURCE)
+    @Transactional(rollbackFor = Throwable.class)
+    public void update(Runoob runoob) {
+        updateCommon(runoob);
     }
 
     @Override

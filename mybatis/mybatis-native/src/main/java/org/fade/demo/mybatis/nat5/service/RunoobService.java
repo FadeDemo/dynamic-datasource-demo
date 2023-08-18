@@ -14,6 +14,12 @@ public interface RunoobService {
     void insert(Runoob runoob);
 
     /**
+     * <p>有异常的更新</p>
+     * @param runoob {@link Runoob}
+     * */
+    void updateWithException(Runoob runoob);
+
+    /**
      * <p>更新</p>
      * @param runoob {@link Runoob}
      * */

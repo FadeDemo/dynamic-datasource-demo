@@ -22,7 +22,14 @@
         where runoob_id = #{id};
     </delete>
 
-    <select id="findById" resultType="org.fade.demo.mybatis.nat5.entity.Runoob">
+    <resultMap id="runoobResultMap" type="org.fade.demo.mybatis.nat5.entity.Runoob">
+        <id column="runoob_id" property="runoobId" jdbcType="INTEGER" />
+        <result column="runoob_title" property="runoobTitle" jdbcType="VARCHAR" />
+        <result column="runoob_author" property="runoobAuthor" jdbcType="VARCHAR" />
+        <result column="submission_date" property="submissionDate" jdbcType="DATE" />
+    </resultMap>
+
+    <select id="findById" resultMap="runoobResultMap">
         select runoob_id, runoob_title, runoob_author, submission_date
         from runoob_tbl
         where runoob_id = #{id}
